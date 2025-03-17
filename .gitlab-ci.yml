@@ -34,8 +34,7 @@ build_and_publish:
     - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
     # Set up Docker Buildx
-    # Increase max layer size to 20GB
-    - docker buildx create --name $BUILDX_NAME --driver-opt oci-worker.max-layer-size=21474836480 --use
+    - docker buildx create --name $BUILDX_NAME --use
     - docker buildx inspect --bootstrap
 
     # Extract metadata (this requires custom commands in GitLab)

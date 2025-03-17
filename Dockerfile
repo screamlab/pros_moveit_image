@@ -98,7 +98,9 @@ RUN source ${WS_MOVEIT}/install/setup.bash && \
                                                    moveit_runtime \
                                                    moveit_task_constructor_visualization \
                                                    moveit2_tutorials \
-                                                   moveit_task_constructor_demo && \
+                                                   moveit_task_constructor_demo
+RUN source ${WS_MOVEIT}/install/setup.bash && \
+    colcon build --mixin release && \
     echo "source ${WS_MOVEIT}/install/setup.bash" >> /root/.bashrc
 
 ##### Post-Settings #####

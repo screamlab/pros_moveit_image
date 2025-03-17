@@ -99,7 +99,7 @@ jobs:
         id: build-and-push
         # Choose one method
         # 1. Use build-push-action
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile

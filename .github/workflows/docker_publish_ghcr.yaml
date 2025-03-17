@@ -43,12 +43,19 @@ jobs:
           echo "THREADS=$THREADS" >> $GITHUB_ENV
           echo "Using $THREADS CPU threads"
       
-      # Add support for more platforms with QEMU (optional)
-      # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.6.0
-        with:
-          image: tonistiigi/binfmt:qemu-v7.0.0
+      # # Add support for more platforms with QEMU (optional)
+      # # https://github.com/docker/setup-qemu-action
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3.6.0
+      #   with:
+      #     image: tonistiigi/binfmt:qemu-v7.0.0
+
+      # Reset QEMU using explicit docker run commands instead of the setup-qemu-action
+      # in order to prevent segmentation fault while setting libc in arm64.
+      # Reference: https://github.com/docker/buildx/issues/1170
+      - name: Reset QEMU
+        run: |
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes -c yes
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache

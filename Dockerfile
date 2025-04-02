@@ -13,7 +13,7 @@ RUN apt update && \
     apt upgrade -y && \
     apt autoremove -y && \
     apt autoclean -y && \
-
+    ulimit -s 65536 && \
     pip3 install --no-cache-dir --upgrade pip
 
 ##### colcon Installation #####
@@ -36,7 +36,11 @@ RUN rosdep install -q -y -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO
 ### Moveit2 Installation ###
 WORKDIR ${WS_MOVEIT}
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
-    colcon build --mixin release && \
+    if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        MAKEFLAGS=-j1 colcon build --mixin release --parallel-workers 1; \
+    else \
+        colcon build --mixin release; \
+    fi && \
     echo "source ${WS_MOVEIT}/install/setup.bash" >> /root/.bashrc
 
 ##### Post-Settings #####

@@ -44,6 +44,7 @@ IMAGE_ARM64="${ECR_URL}/${IMG_NAME}:arm64-${TAG}"
 # Create and push manifest with dual tags ("latest" and the version tag)
 # The latest tag
 echo "Creating multi-arch manifest for tag 'latest'..."
+docker manifest rm ${ECR_URL}/${IMG_NAME}:latest || true
 docker manifest create ${ECR_URL}/${IMG_NAME}:latest ${IMAGE_AMD64} ${IMAGE_ARM64}
 
 echo "Annotating AMD64 image as default in the 'latest' manifest..."
@@ -54,6 +55,7 @@ docker manifest push ${ECR_URL}/${IMG_NAME}:latest
 
 # The version tag
 echo "Creating multi-arch manifest for version tag '${TAG}'..."
+docker manifest rm ${ECR_URL}/${IMG_NAME}:${TAG} || true
 docker manifest create ${ECR_URL}/${IMG_NAME}:${TAG} ${IMAGE_AMD64} ${IMAGE_ARM64}
 
 echo "Annotating AMD64 image as default in the '${TAG}' manifest..."

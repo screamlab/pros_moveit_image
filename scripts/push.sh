@@ -69,6 +69,7 @@ TARGET_IMAGE="${ECR_URL}/${IMG_NAME}:${ARCH}-${TAG}"
 
 echo "Tagging image as ${TARGET_IMAGE}..."
 docker tag ${ECR_URL}/${IMG_NAME}:latest ${TARGET_IMAGE}
+# docker rmi -f ${ECR_URL}/${IMG_NAME}:latest 
 
 echo "Pushing ${TARGET_IMAGE}..."
 docker push ${TARGET_IMAGE}

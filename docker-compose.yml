@@ -1,0 +1,18 @@
+services:
+  cpu:
+    image: registry.screamtrumpet.csie.ncku.edu.tw/pros_images/pros_moveit_image:latest
+    container_name: moveit2_container
+    privileged: true
+    network_mode: host
+    ipc: host
+    pid: host
+    command: /bin/bash
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $XAUTHORITY:/root/.Xauthority
+      - ./robot_ws:/workspaces/src/robot_ws
+      - /dev/shm:/dev/shm
+    environment:
+      QT_X11_NO_MITSHM: 1
+      DISPLAY: $DISPLAY
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID}

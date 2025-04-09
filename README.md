@@ -1,5 +1,5 @@
-# pros_jetson_driver
-This repository provides drivers for RPLidar, the Astra camera, and the Dabai camera. Since these devices are connected to the Nvidia Jetson Orin Nano Developer Kit in our project, we have named this repository 'Pros Jetson Image.' All rights reserved.
+# pros_moveit
+This repository provides MoveIt2 humble version package, we have named this repository 'Pros MoveIt Image.' All rights reserved.
 
 
 
@@ -43,6 +43,46 @@ source /workspaces/rebuild_colcon.rc
 ### <font color=#FF0000>Shortcut</font> for Colcon
 
 We have written the command `source /workspaces/rebuild_colcon.rc` as an alias <font color=#FF0000>'r'</font> in both `/root/.bashrc` and `/root/.zshrc`. Users only need to <font color=#FF0000>type 'r' to execute the command</font>.
+
+
+
+## Manually Push Multi-Architecture Docker Manifest
+
+We provide `push.sh` and `manifest.sh` in `script` directory to do so.
+
+
+
+### `push.sh`
+
+1. Make sure your target docker image is named to the same as your target manifest location.
+
+2. Suppose  your target manifest is `ghcr.io/screamlab/pros_moveit_image:latest`. Make sure you've tagged your Docker image with this name.
+
+3. Login to the target container registry.
+
+4. Provide the container registry, image name, and tag as parameters to the script, like so:
+
+   ```bash 
+   ./scripts/push.sh -c ghcr.io/screamlab -n pros_moveit_image -t 0.1.2
+   ```
+
+   This script automatically detects your system architecture and push the re-tagged image to `ghcr.io/screamlab/pros_moveit_image:${ARCH}-${TAG}`.
+
+5. Do the step above in another system architecture.
+
+
+
+### `manifest.sh`
+
+1. Make sure all your images with different architecture are all pushed to the container registry.
+
+2. Run the following command:
+
+   ```bash
+   ./scripts/manifest.sh -c ghcr.io/screamlab -n pros_moveit_image -t 0.1.2
+   ```
+
+   This script tries to delete the duplicated manifest name in local host and then push the manifest to the container registry.
 
 
 

@@ -1,6 +1,6 @@
 FROM registry.screamtrumpet.csie.ncku.edu.tw/pros_images/pros_base_image:latest
-ENV ROS2_WS /workspaces
-ENV WS_MOVEIT /root/ws_moveit
+ENV ROS2_WS=/workspaces
+ENV WS_MOVEIT=/root/ws_moveit
 ENV ROS_DOMAIN_ID=1
 ENV ROS_DISTRO=humble
 ARG THREADS=4
@@ -45,6 +45,11 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
 
 ##### Post-Settings #####
 WORKDIR ${ROS2_WS}
+
+# Update entrypoint
+COPY ./ros_entrypoint.bash /ros_entrypoint.bash
+RUN chmod +x /ros_entrypoint.bash && \
+
 # Clear tmp and cache
 RUN rm -rf /tmp/* && \
     rm -rf /temp/* && \

@@ -51,7 +51,7 @@ COPY ./ros_entrypoint.bash /ros_entrypoint.bash
 RUN chmod +x /ros_entrypoint.bash && \
 
 # Clear tmp and cache
-RUN rm -rf /tmp/* && \
+    rm -rf /tmp/* && \
     rm -rf /temp/* && \
     rm -rf /var/lib/apt/lists/*
 

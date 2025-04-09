@@ -36,11 +36,14 @@ RUN rosdep install -q -y -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO
 ### Moveit2 Installation ###
 WORKDIR ${WS_MOVEIT}
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
-    if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        MAKEFLAGS=-j1 colcon build --mixin release --parallel-workers 1; \
-    else \
-        colcon build --mixin release; \
-    fi && \
+    # # Limit the number of threads to 1 for arm64 architecture
+    # # to prevent cpp segmentation fault in qemu.
+    # if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+    #     MAKEFLAGS=-j1 colcon build --mixin release --parallel-workers 1; \
+    # else \
+    #     colcon build --mixin release; \
+    # fi && \
+    colcon build --mixin release && \
     echo "source ${WS_MOVEIT}/install/setup.bash" >> /root/.bashrc
 
 ##### Post-Settings #####
